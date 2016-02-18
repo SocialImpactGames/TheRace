@@ -25,10 +25,6 @@ public class MultiBlockPlatform : MonoBehaviour {
 		}
 
 		CreateTile (Right, MiddleCount + 1);
-
-		BoxCollider2D collider = GetComponent<BoxCollider2D> ();
-		collider.size = new Vector2( MiddleCount + 2, 1);
-		collider.offset = new Vector2 ((MiddleCount / 2f)+0.5f,0);
 	}
 
 	void CreateTile(Sprite sprite, int index){
