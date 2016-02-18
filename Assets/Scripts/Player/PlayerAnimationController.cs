@@ -2,14 +2,17 @@
 using System.Collections;
 
 public class PlayerAnimationController : MonoBehaviour {
+	Animator aniamtor;
+	Player player;
 
-	// Use this for initialization
 	void Start () {
-	
+		aniamtor = GetComponent<Animator> ();
+		player = GetComponent<Player> ();
 	}
 	
-	// Update is called once per frame
 	void Update () {
-	
+		print (player.velocity.y);
+		aniamtor.SetFloat ("YVelocity", player.velocity.y);
+		aniamtor.SetBool("OnGround", player.IsOnGround());
 	}
 }

@@ -2,11 +2,13 @@
 using System.Collections;
 
 public class MultiBlockPlatform : MonoBehaviour {
+	public GameObject TilePrefap;
+
 	public Sprite Left;
 	public Sprite Middle;
 	public Sprite Right;
 
-	[Range(0,20)]
+	[Range(0,200)]
 	public int MiddleCount;
 
 	void Awake () {
@@ -30,10 +32,10 @@ public class MultiBlockPlatform : MonoBehaviour {
 	}
 
 	void CreateTile(Sprite sprite, int index){
-		GameObject go = new GameObject ();
+		GameObject go = SimplePool.Spawn(TilePrefap, Vector3.zero, Quaternion.identity);
 		go.transform.SetParent (transform);
 		go.name = sprite.name + index;
-		go.AddComponent<SpriteRenderer> ().sprite = sprite;
+		go.GetComponent<SpriteRenderer> ().sprite = sprite;
 
 		go.transform.localPosition = new Vector2 (index,0);
 		go.transform.localRotation = Quaternion.identity;
