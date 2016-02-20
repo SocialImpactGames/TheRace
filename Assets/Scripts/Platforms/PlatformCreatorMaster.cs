@@ -30,24 +30,17 @@ public class PlatformCreatorMaster : MonoBehaviour {
 
 	public void CreateGameTiles(){
 		while (TargetDistance > distanceCovered) {
-			CreateRandomPlatformStartingFromX (distanceCovered);// + Random.Range (1, 5));
+			CreateRandomPlatformStartingFromX (distanceCovered + Random.Range (1, 4));
 		}
+
+		CreateWinningPlatform ();
 	}
 
 	void CreateRandomPlatformStartingFromX(int x){
-		if (distanceCovered < TargetDistance) {
-			CreateTiles (4);
-			distanceCovered = x + 6;
-		} else {
-			CreateWinningBlock ();
-		}
+		CreateTiles (4);
+		distanceCovered = x + 6;
 	}
 
-	float GetMostRight(){
-		return Camera.main.transform.position.x + worldSize.x;
-	}
-
-	[ContextMenu("CreateTiles")]
 	void CreateTiles(int count){
 		int y = Random.Range (-3, 1);
 
@@ -70,7 +63,7 @@ public class PlatformCreatorMaster : MonoBehaviour {
 		go.transform.localRotation = Quaternion.identity;
 	}
 
-	void CreateWinningBlock(){
+	void CreateWinningPlatform(){
 		int y = Random.Range (-3, 1);
 
 		CreateTile (Left, 0, y);
