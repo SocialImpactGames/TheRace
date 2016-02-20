@@ -15,6 +15,8 @@ public class Player : MonoBehaviour {
 	public Vector3 velocity;
 	float velocityXSmoothing;
 
+	bool doubleJumpd = false;
+
 	PlayerMovmentLogic controller;
 	PlayerNetwork network;
 
@@ -43,10 +45,16 @@ public class Player : MonoBehaviour {
 			velocity.y = 0;
 		}
 
+		if (IsOnGround ()) {
+			doubleJumpd = false;
+		}
+
 		Vector2 input = Vector2.right;
 
 		if ( ShouldJump() && CanJump()) {
 			velocity.y = jumpVelocity;
+			if (doubleJumpd == false && IsOnGround () == false)
+				doubleJumpd = true;
 		}
 
 		float targetVelocityX = input.x * moveSpeed;
@@ -56,7 +64,7 @@ public class Player : MonoBehaviour {
 	}
 
 	public bool CanJump(){
-		return IsOnGround ();
+		return IsOnGround () || doubleJumpd == false;
 	}
 
 	public bool IsOnGround(){
