@@ -36,6 +36,9 @@ public class Player : MonoBehaviour {
 		if (GameMaster.Instance.state != GameMaster.GameState.Playing)
 			return;
 
+		if(network.isMine() == false)
+			return;
+
 		if (controller.collisions.above || controller.collisions.below) {
 			velocity.y = 0;
 		}
