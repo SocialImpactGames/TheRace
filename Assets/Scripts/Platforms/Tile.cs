@@ -23,7 +23,7 @@ public class Tile : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (transform.position.x < Camera.main.transform.position.x -world.x - SpriteSize.x / 2) {
-			SimplePool.Despawn(gameObject);
+//			SimplePool.Despawn(gameObject);
 		}
 	}
 }

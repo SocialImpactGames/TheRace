@@ -14,15 +14,22 @@ public class PlatformCreatorMaster : MonoBehaviour {
 
 	int TargetDistance = 300;
 
+	public static PlatformCreatorMaster Instance; 
+
 	void Start () {
+		if (Instance == null)
+			Instance = this;
+		else
+			Destroy (gameObject);
+
 		distanceCovered = 22;
 		 worldSize = Camera.main.ScreenToWorldPoint(new Vector3 (Camera.main.pixelWidth
 			, Camera.main.pixelHeight
 			, 0));
 	}
-	
-	void Update () {
-		if (GetMostRight () > distanceCovered) {
+
+	public void CreateGameTiles(){
+		while (TargetDistance > distanceCovered) {
 			CreateRandomPlatformStartingFromX (distanceCovered);// + Random.Range (1, 5));
 		}
 	}
@@ -41,7 +48,7 @@ public class PlatformCreatorMaster : MonoBehaviour {
 	}
 
 	[ContextMenu("CreateTiles")]
-	public void CreateTiles(int count){
+	void CreateTiles(int count){
 		int y = Random.Range (-3, 1);
 
 		CreateTile (Left, 0, y);

@@ -24,7 +24,14 @@ public class GameNetworkMaster : Photon.PunBehaviour {
 		PhotonNetwork.JoinOrCreateRoom ("race", ro, TypedLobby.Default);
 	}
 
-	[ContextMenu("StartGame")]
+	public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
+	{
+		if (PhotonNetwork.playerList.Length >= 2) {
+			PhotonNetwork.room.open = false;
+			StartGame ();
+		}
+	}
+
 	void StartGame(){
 		int seed = Random.Range (10000, 1000000);
 		photonView.RPC ("PunRPC_StartGame", PhotonTargets.All, seed);
