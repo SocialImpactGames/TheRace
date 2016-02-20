@@ -3,6 +3,7 @@ using System.Collections;
 
 public class PlatformCreatorMaster : MonoBehaviour {
 	public GameObject TilePrefap;
+	public GameObject ExitPrefap;
 
 	public Sprite Left;
 	public Sprite Middle;
@@ -11,8 +12,10 @@ public class PlatformCreatorMaster : MonoBehaviour {
 	int distanceCovered;
 	Vector3 worldSize;
 
+	int TargetDistance = 300;
+
 	void Start () {
-		distanceCovered = 4;
+		distanceCovered = 22;
 		 worldSize = Camera.main.ScreenToWorldPoint(new Vector3 (Camera.main.pixelWidth
 			, Camera.main.pixelHeight
 			, 0));
@@ -20,13 +23,17 @@ public class PlatformCreatorMaster : MonoBehaviour {
 	
 	void Update () {
 		if (GetMostRight () > distanceCovered) {
-			CreateRandomPlatformStartingFromX (distanceCovered + Random.Range (1, 5));
+			CreateRandomPlatformStartingFromX (distanceCovered);// + Random.Range (1, 5));
 		}
 	}
 
 	void CreateRandomPlatformStartingFromX(int x){
-		CreateTiles (4);
-		distanceCovered = x + 6;
+		if (distanceCovered < TargetDistance) {
+			CreateTiles (4);
+			distanceCovered = x + 6;
+		} else {
+			CreateWinningBlock ();
+		}
 	}
 
 	float GetMostRight(){
@@ -54,5 +61,26 @@ public class PlatformCreatorMaster : MonoBehaviour {
 
 		go.transform.position = new Vector2 (distanceCovered + 1 + index, y);
 		go.transform.localRotation = Quaternion.identity;
+	}
+
+	void CreateWinningBlock(){
+		int y = Random.Range (-3, 1);
+
+		CreateTile (Left, 0, y);
+
+		for (int i = 0; i < 10; i++) {
+			CreateTile (Middle, i + 1, y);
+		}
+
+		CreateTile (Right, 10 + 1, y);
+
+
+		GameObject go = SimplePool.Spawn(ExitPrefap, Vector3.zero, Quaternion.identity);
+		go.transform.parent = GameObject.FindObjectOfType<PlatformCreatorMaster>().transform;
+
+		go.transform.position = new Vector2 (distanceCovered + 1 + 5, y + 2);
+		go.transform.localRotation = Quaternion.identity;
+
+		distanceCovered += 100;
 	}
 }

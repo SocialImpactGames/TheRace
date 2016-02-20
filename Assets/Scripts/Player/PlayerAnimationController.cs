@@ -10,8 +10,9 @@ public class PlayerAnimationController : MonoBehaviour {
 		player = GetComponent<Player> ();
 	}
 	
-	void Update () {
+	void LateUpdate () {
 		print (player.velocity.y);
+		aniamtor.SetFloat ("XVelocity", player.velocity.x);
 		aniamtor.SetFloat ("YVelocity", player.velocity.y);
 		aniamtor.SetBool("OnGround", player.IsOnGround());
 	}

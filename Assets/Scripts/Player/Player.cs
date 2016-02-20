@@ -16,16 +16,25 @@ public class Player : MonoBehaviour {
 	float velocityXSmoothing;
 
 	PlayerMovmentLogic controller;
+	PlayerNetwork network;
 
 	void Start() {
 		controller = GetComponent<PlayerMovmentLogic> ();
+		network = GetComponent<PlayerNetwork> ();
+
+		if (network.isMine ())
+			Camera.main.GetComponent<SmoothCamera2D> ().target = gameObject.transform;
+		else {
+			transform.GetChild (0).gameObject.SetActive (false);
+		}
 
 		gravity = -(2 * jumpHeight) / Mathf.Pow (timeToJumpApex, 2);
 		jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
-		print ("Gravity: " + gravity + "  Jump Velocity: " + jumpVelocity);
 	}
 
 	void Update() {
+		if (GameMaster.Instance.state != GameMaster.GameState.Playing)
+			return;
 
 		if (controller.collisions.above || controller.collisions.below) {
 			velocity.y = 0;
@@ -52,6 +61,6 @@ public class Player : MonoBehaviour {
 	}
 
 	bool ShouldJump(){
-		return Input.GetKeyDown (KeyCode.Space) || Input.GetMouseButtonDown (0);
+		return (Input.GetKeyDown (KeyCode.Space) || Input.GetMouseButtonDown (0)) && network.isMine ();
 	}
 }
