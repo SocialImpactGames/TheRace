@@ -18,7 +18,7 @@ public class PlayerNetwork : Photon.PunBehaviour {
 
 	void Update(){
 		if (isMine() == false) {
-			transform.position = pos;//Vector3.Lerp(transform.position, pos, 1 * Time.deltaTime);
+			transform.position = pos;
 		}
 	}
 

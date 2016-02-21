@@ -65,6 +65,10 @@ public class Player : MonoBehaviour {
 
 		if (transform.position.y < -20)
 			transform.position = PlatformsMaster.Instance.GetValidTileTransformAfterX ((int)transform.position.x );
+
+		if (ShouldAttack ())
+			Attack ();
+			
 	}
 
 	public bool CanJump(){
@@ -76,6 +80,14 @@ public class Player : MonoBehaviour {
 	}
 
 	bool ShouldJump(){
-		return (Input.GetKeyDown (KeyCode.Space) || Input.GetMouseButtonDown (0)) && network.isMine ();
+		return (InputController.Instance.ShouldJump()) && network.isMine ();
+	}
+
+	bool ShouldAttack(){
+		return InputController.Instance.ShouldAttack ();
+	}
+
+	void Attack(){
+		ObjectsController.SpawnObjectInHand (gameObject.transform.position);
 	}
 }
