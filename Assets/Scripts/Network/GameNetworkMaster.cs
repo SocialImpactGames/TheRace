@@ -6,6 +6,7 @@ public class GameNetworkMaster : Photon.PunBehaviour {
 
 	public override void OnJoinedRoom(){
 		PhotonNetwork.Instantiate ("Player", new Vector3(PhotonNetwork.room.playerCount,2,0), Quaternion.identity, 0);
+		StartGame ();
 	}
 
 	public override void OnJoinedLobby()

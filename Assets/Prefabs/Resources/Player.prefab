@@ -145,7 +145,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collisionMask:
     serializedVersion: 2
-    m_Bits: 4294967039
+    m_Bits: 4294966527
   horizontalRayCount: 4
   verticalRayCount: 4
 --- !u!114 &11491052
@@ -252,6 +252,10 @@ Prefab:
       propertyPath: ObservedComponents.Array.data[0]
       value: 
       objectReference: {fileID: 11422692}
+    - target: {fileID: 0}
+      propertyPath: collisionMask.m_Bits
+      value: 4294966527
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 185184}

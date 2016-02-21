@@ -7,6 +7,8 @@ public class PlatformsMaster : MonoBehaviour {
 	public GameObject TilePrefap;
 	public GameObject ExitPrefap;
 
+	public GameObject Star;
+
 	public Sprite Left;
 	public Sprite Middle;
 	public Sprite Right;
@@ -63,6 +65,10 @@ public class PlatformsMaster : MonoBehaviour {
 		go.transform.localRotation = Quaternion.identity;
 		tilesX.Add (distanceCovered, go.transform.position);
 		distanceCovered++;
+
+		if (Random.Range (0, 12) == 5) {
+			GameObject star = SimplePool.Spawn(Star, new Vector2 (distanceCovered , y + Random.Range(2,5)), Quaternion.identity);
+		}
 	}
 
 	void CreateWinningPlatform(){
