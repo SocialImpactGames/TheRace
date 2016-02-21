@@ -24,7 +24,7 @@ public class GameMaster : MonoBehaviour {
 	}
 		
 	public void StartGame(){
-		PlatformCreatorMaster.Instance.CreateGameTiles ();
+		PlatformsMaster.Instance.CreateGameTiles ();
 		state = GameState.Playing;
 	}
 }

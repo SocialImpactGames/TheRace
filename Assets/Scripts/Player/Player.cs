@@ -61,6 +61,10 @@ public class Player : MonoBehaviour {
 		velocity.x = Mathf.SmoothDamp (velocity.x, targetVelocityX, ref velocityXSmoothing, (IsOnGround())?accelerationTimeGrounded:accelerationTimeAirborne);
 		velocity.y += gravity * Time.deltaTime;
 		controller.Move (velocity * Time.deltaTime);
+
+
+		if (transform.position.y < -20)
+			transform.position = PlatformsMaster.Instance.GetValidTileTransformAfterX ((int)transform.position.x );
 	}
 
 	public bool CanJump(){
