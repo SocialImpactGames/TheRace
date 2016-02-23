@@ -1,47 +1,31 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using PlayFab;
 using PlayFab.ClientModels;
 
-public class PlayFapConnectionMaster : MonoBehaviour {
+public class PlayFapConnectionMaster : Photon.PunBehaviour {
 	public string PlayFabId;
 
+	void Awake () {
+		PlayFabSettings.TitleId = PrivateSettings.GetPlayFapTitleID ();
+	}
 
-	void Login()
+	public void Login(InputField nickname)
 	{
 		LoginWithCustomIDRequest request = new LoginWithCustomIDRequest()
 		{
 			CreateAccount = true,
-			CustomId = SystemInfo.deviceUniqueIdentifier
+			CustomId = SystemInfo.deviceUniqueIdentifier + nickname.text
 		};
 
 		PlayFabClientAPI.LoginWithCustomID(request, (result) => {
 			PlayFabId = result.PlayFabId;
-			Debug.Log("Got PlayFabID: " + PlayFabId);
-
-			if(result.NewlyCreated)
-			{
-				Debug.Log("(new account)");
-			}
-			else
-			{
-				Debug.Log("(existing account)");
-			}
+			PlayerPrefs.SetString("nickname", nickname.text);
+			PlayerPrefs.SetString("playfabID", PlayFabId);
 				
-			GetPhotonAuthenticationTokenRequest PunRequest = new GetPhotonAuthenticationTokenRequest();
-			PunRequest.PhotonApplicationId = PrivateSettings.GetPhotonAppID();
 
-			// get an authentication ticket to pass on to Photon
-			PlayFabClientAPI.GetPhotonAuthenticationToken(PunRequest, (ph_r) =>{
-					print("Photon Connected "+ph_r.PhotonCustomAuthenticationToken);
-
-					PhotonNetwork.ConnectUsingSettings("0.0.1");
-				}, (error) => {
-					Debug.Log("Error logging in player with custom ID:");
-					Debug.Log(error.ErrorMessage);
-				}
-			);
-
+			ConnectToPhoton();
 		},
 			(error) => {
 				Debug.Log("Error logging in player with custom ID:");
@@ -49,12 +33,28 @@ public class PlayFapConnectionMaster : MonoBehaviour {
 			});
 	}
 
+	void ConnectToPhoton(){
+		GetPhotonAuthenticationTokenRequest PunRequest = new GetPhotonAuthenticationTokenRequest();
+		PunRequest.PhotonApplicationId = PrivateSettings.GetPhotonAppID();
 
-	// Use this for initialization
-	void Start () {
-		PlayFabSettings.TitleId = PrivateSettings.GetPlayFapTitleID ();
-//		Login ();
-		PhotonNetwork.ConnectUsingSettings("0.0.1");
+		PlayFabClientAPI.GetPhotonAuthenticationToken(PunRequest, (ph_r) =>{
 
+			PhotonNetwork.AuthValues = new AuthenticationValues();
+			PhotonNetwork.AuthValues.AuthType = CustomAuthenticationType.Custom;
+			//				PhotonNetwork.AuthValues.UserId = "3"; // alternatively set by server
+			PhotonNetwork.AuthValues.AddAuthParameter("username", PlayFabId);
+			PhotonNetwork.AuthValues.AddAuthParameter("token", ph_r.PhotonCustomAuthenticationToken);
+			PhotonNetwork.ConnectUsingSettings("1.0");
+
+
+		}, (error) => {
+			Debug.Log("Error logging in player with custom ID:");
+			Debug.Log(error.ErrorMessage);
+		});
+	}
+
+	public override void OnJoinedRoom()
+	{
+		PhotonNetwork.LoadLevel ("Game");
 	}
 }

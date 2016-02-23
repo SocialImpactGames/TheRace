@@ -3,25 +3,8 @@ using System.Collections;
 
 public class GameNetworkMaster : Photon.PunBehaviour {
 
-
-	public override void OnJoinedRoom(){
+	void Awake(){
 		PhotonNetwork.Instantiate ("Player", new Vector3(PhotonNetwork.room.playerCount,2,0), Quaternion.identity, 0);
-		StartGame ();
-	}
-
-	public override void OnJoinedLobby()
-	{
-		JoinRoom ();	
-	}
-
-	public override void OnConnectedToMaster()
-	{
-		JoinRoom ();
-	}
-
-	void JoinRoom(){
-		RoomOptions ro =  new RoomOptions() { isVisible = true, maxPlayers = 4 };
-		PhotonNetwork.JoinOrCreateRoom ("race", ro, TypedLobby.Default);
 	}
 
 	public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)

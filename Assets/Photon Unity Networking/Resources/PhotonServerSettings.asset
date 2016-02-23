@@ -18,8 +18,8 @@ MonoBehaviour:
   AppID: 26000579-b23f-4d74-ba9b-12d7b764682a
   PreferredRegion: 0
   EnabledRegions: -1
-  JoinLobby: 0
-  EnableLobbyStatistics: 0
+  JoinLobby: 1
+  EnableLobbyStatistics: 1
   RpcList:
   - Chat
   - ColorRpc
